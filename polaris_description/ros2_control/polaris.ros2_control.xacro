@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="polaris_ndi_sensor" params="name">
+
+    <ros2_control name="${name}" type="sensor">
+      <hardware>
+        <plugin>ndi_hardware/NdiSensorHardwareInterface</plugin>
+      </hardware>
+
+      <sensor name="rigidbody1">
+        <state_interface name="pose.position.x"/>
+        <state_interface name="pose.position.y"/>
+        <state_interface name="pose.position.z"/>
+        <state_interface name="pose.orientation.x"/>
+        <state_interface name="pose.orientation.y"/>
+        <state_interface name="pose.orientation.z"/>
+        <state_interface name="pose.orientation.w"/>
+      </sensor>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>
