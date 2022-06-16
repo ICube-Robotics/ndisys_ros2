@@ -27,6 +27,7 @@ add_library(rigid_pose_broadcaster
 )
 target_include_directories(rigid_pose_broadcaster PRIVATE include)
 ament_target_dependencies(rigid_pose_broadcaster
+  ndi_msgs
   builtin_interfaces
   controller_interface
   pluginlib

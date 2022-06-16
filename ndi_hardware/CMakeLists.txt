@@ -25,6 +25,7 @@ add_library(
   ${PROJECT_NAME}
   SHARED
   src/ndi_sensor_hi.cpp
+  src/helper_capi_functions.cpp
 )
 
 target_include_directories(

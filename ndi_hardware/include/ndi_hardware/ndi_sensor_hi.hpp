@@ -19,9 +19,20 @@
 #ifndef NDI_HARDWARE__NDI_EFFORT_HI
 #define NDI_HARDWARE__NDI_EFFORT_HI
 
+#include <unistd.h>
+/* --------------------------- CPP Core Libraries --------------------------- */
+
 #include <memory>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <chrono>
+#include <functional>
+
+/* ------------------------------ ROS Libraries ----------------------------- */
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -30,6 +41,19 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "rclcpp/macros.hpp"
 #include "ndi_hardware/visibility_control.h"
+
+/* ---------------------------- NDI API Libraries --------------------------- */
+
+#include "CombinedApi.h"
+#include "PortHandleInfo.h"
+#include "ToolData.h"
+
+/* ------------------------------ My Headers -------------------------------- */
+
+
+#include "helper_capi_functions.h"
+
+
 
 
 namespace ndi_hardware
@@ -57,6 +81,12 @@ public:
 private:
   // Store the poses of the trackers 
   std::vector<std::vector<double>> hw_tracker_poses_;
+
+  std::vector<ToolData> enabledTools;
+
+  std::vector<PortHandleInfo> portHandles;
+
+  std::chrono::milliseconds publish_period_ms;
 };
 
 }  // namespace NDI_HARDWARE

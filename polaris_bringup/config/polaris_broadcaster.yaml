@@ -1,0 +1,20 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10
+
+    rigid_pose_broadcaster:
+      type: ndi_controllers/rigid_pose_broadcaster
+
+
+rigid_pose_broadcaster:
+  ros__parameters:  
+    state_publish_rate: 10
+    state_interface_names:
+      - pose.position.x
+      - pose.position.y
+      - pose.position.z
+      - pose.orientation.x
+      - pose.orientation.y
+      - pose.orientation.z
+      - pose.orientation.w
+    

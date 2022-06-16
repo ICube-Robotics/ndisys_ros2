@@ -40,6 +40,16 @@
 #include "std_msgs/msg/header.hpp"
 
 
+/* -------------------------------------------------------------------------- */
+/*                        Things to get from parameters                       */
+/* -------------------------------------------------------------------------- */
+
+
+#define RIGI_POSES_TOPIC "ndi_rigid_poses"
+
+/* ------------------------------------ . ----------------------------------- */
+
+
 namespace rclcpp_lifecycle
 {
 class State;
@@ -74,7 +84,7 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
 RigidPoseBroadcaster::on_configure(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   try{
-    rigid_pose_publisher_ = get_node()->create_publisher<ndi_msgs::msg::RigidArray>("rigid_poses", rclcpp::SystemDefaultsQoS());
+    rigid_pose_publisher_ = get_node()->create_publisher<ndi_msgs::msg::RigidArray>(RIGI_POSES_TOPIC , rclcpp::SystemDefaultsQoS());
     realtime_rigid_pose_publisher_ = std::make_shared<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>>(rigid_pose_publisher_);
   }
   catch (const std::exception & e){
@@ -88,6 +98,7 @@ RigidPoseBroadcaster::on_configure(const rclcpp_lifecycle::State & /*previous_st
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
 RigidPoseBroadcaster::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
+  fprintf(stdout, "Activated ---------------------- ");
   return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
 }
 
