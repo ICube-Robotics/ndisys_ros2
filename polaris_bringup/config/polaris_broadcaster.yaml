@@ -3,7 +3,7 @@ controller_manager:
     update_rate: 10
 
     rigid_pose_broadcaster:
-      type: ndi_controllers/rigid_pose_broadcaster
+      type: ndi_controllers/RigidPoseBroadcaster
 
 
 rigid_pose_broadcaster:
@@ -17,4 +17,3 @@ rigid_pose_broadcaster:
       - pose.orientation.y
       - pose.orientation.z
       - pose.orientation.w
-    

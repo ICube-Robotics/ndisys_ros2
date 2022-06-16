@@ -81,11 +81,8 @@ public:
 private:
   // Store the poses of the trackers 
   std::vector<std::vector<double>> hw_tracker_poses_;
-
   std::vector<ToolData> enabledTools;
-
   std::vector<PortHandleInfo> portHandles;
-
   std::chrono::milliseconds publish_period_ms;
 };
 
