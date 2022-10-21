@@ -77,7 +77,8 @@ CallbackReturn NdiSensorHardwareInterface::on_deactivate(const rclcpp_lifecycle:
     return CallbackReturn::SUCCESS;
 }
 // ------------------------------------------------------------------------------------------
-hardware_interface::return_type NdiSensorHardwareInterface::read()
+hardware_interface::return_type NdiSensorHardwareInterface::read(
+    const rclcpp::Time & time, const rclcpp::Duration & period)
 {
     return hardware_interface::return_type::OK;
 }

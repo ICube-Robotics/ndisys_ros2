@@ -31,6 +31,7 @@
 #include "rclcpp/macros.hpp"
 #include "ndi_hardware/visibility_control.h"
 
+using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
 namespace ndi_hardware
 {
@@ -52,7 +53,9 @@ public:
   CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
 
   NDI_HARDWARE_PUBLIC
-  hardware_interface::return_type read() override;
+  hardware_interface::return_type read(
+      const rclcpp::Time & time,
+      const rclcpp::Duration & period) override;
 
 private:
   // Store the poses of the trackers 
