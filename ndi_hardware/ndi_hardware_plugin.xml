@@ -1,7 +1,7 @@
 <library path="ndi_hardware">
   <class name="ndi_hardware/NdiSensorHardwareInterface"
          type="ndi_hardware::NdiSensorHardwareInterface"
-         base_class_type="hardware_interface::SystemInterface">
+         base_class_type="hardware_interface::SensorInterface">
     <description>
       ROS2 Control hardware interface for NDI measurement systems.
     </description>
