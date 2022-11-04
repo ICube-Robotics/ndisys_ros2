@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-// Authors: Maciej Bednarczyk
+// Authors: Maciej Bednarczyk, Adnan SAOOD
 //
 
 #ifndef NDI_HARDWARE__NDI_EFFORT_HI
@@ -30,6 +30,13 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "rclcpp/macros.hpp"
 #include "ndi_hardware/visibility_control.h"
+#include <rclcpp/rclcpp.hpp>
+
+#include "CombinedApi.h"
+#include "PortHandleInfo.h"
+#include "ToolData.h"
+#include "rcl_yaml_param_parser/types.h"
+
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
@@ -60,6 +67,63 @@ public:
 private:
   // Store the poses of the trackers 
   std::vector<std::vector<double>> hw_tracker_poses_;
+  // Store one pose of the trackers
+  std::vector<double> tracker_pose_;
+
+  /** @brief Vector holding tool names (file paths) in order of YAML file*/
+  std::vector<std::string> tool_names_;
+  /** @brief Vector holding currently tracked tools*/
+  std::vector<ToolData> enabledTools_;
+  /** @brief Vector holding currently tracked tools*/
+  std::vector<ToolData> newToolData_;
+  /** @brief Vector holding port handles for the trackers (see NDI Api documentation)*/
+  std::vector<PortHandleInfo> portHandles_;
+  /** @brief Number of tools in the YAML file (tracked and not-tracked)*/
+  size_t tool_count_;
+  /** @brief IP of the NDI device (string format in the YAML)*/
+  std::string ndi_ip_;
+  /** @brief True if the connected device supports BX2 request structure*/
+  bool apiSupportsBX2_ = false;
+  /** @brief Class of functions mainly without real use but organization. 
+   * To be stripped and removed*/
+  CombinedApi capi_;
+
+  /**
+   * @brief Prints a debug message if a method call failed.
+   * @details To use, pass the method name and the error code returned by the method.
+   *          Eg: onErrorPrintDebugMessage("capi.initialize()", capi.initialize());
+   *          If the call succeeds, this method does nothing.
+   *          If the call fails, this method prints an error message to stdout.
+   */
+  void onErrorPrintDebugMessage(std::string methodName, int errorCode);
+
+  /**
+   * @brief Determines whether an NDI device supports the BX2 command by looking at the API revision
+   * @details To use, assign it to a bool variable and use the variable.
+   * The function is expensive, to be called only once in initialization phase only.
+   */
+  bool determineApiSupportForBX2();
+
+  /**
+   * @brief Loads a tool from a tool definition file (.rom)
+   * @details To use, pass a const char* to the function containing the file path of the ROM bins.
+   */
+  void loadTool(const char *toolDefinitionFilePath);
+
+  /**
+   * @brief Initialize and enable loaded tools. This is the same regardless of tool type.
+   */
+  void initializeAndEnableTools();
+
+  /**
+   * @brief Returns the string: "[tool.id] s/n:[tool.serialNumber]" used in CSV output
+   */
+  std::string getToolInfo(std::string toolHandle);
+  /**
+   * @brief Returns a rclcpp::Parameter object with params inside.
+   */
+  void getParamsFromFile(std::string config_file);
+
 };
 
 }  // namespace NDI_HARDWARE

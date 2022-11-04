@@ -19,6 +19,8 @@ find_package(rclcpp_lifecycle REQUIRED)
 
 set(EXT_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/ndi_capi")
 include_directories("${EXT_LIBS_DIR}/include")
+add_library(ndicapi_library SHARED IMPORTED GLOBAL)
+set_target_properties(ndicapi_library PROPERTIES IMPORTED_LOCATION ${EXT_LIBS_DIR}/libndicapi.so)
 
 ## COMPILE
 add_library(
@@ -41,8 +43,13 @@ ament_target_dependencies(
   rclcpp_lifecycle
 )
 
-target_link_libraries(${PROJECT_NAME} ${EXT_LIBS_DIR}/libndicapi.so)
+target_link_libraries(${PROJECT_NAME} ndicapi_library yaml-cpp)
 
+# Causes the visibility macros to use dllexport rather than dllimport,
+# which is appropriate when building the dll but not consuming it.
+target_compile_definitions(${PROJECT_NAME} PRIVATE "NDI_HARDWARE_BUILDING_LIBRARY")
+# prevent pluginlib from using boost
+target_compile_definitions(${PROJECT_NAME} PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 pluginlib_export_plugin_description_file(hardware_interface ndi_hardware_plugin.xml)
 
 # INSTALL
