@@ -1,0 +1,15 @@
+polaris_ip: "192.155.1.80"
+publish_period_ms: 20
+
+trackers:
+  - id: 0
+    srom: "/home/adnan/Desktop/ros2/ndi/ndisys_ros2/polaris_description/srom/UfoGuideTransducer.rom"
+    topic_name: "fus_tracker"
+
+  # - id: 1
+  #   srom: "~/Desktop/ros2_/ur5_control/src/polaris_vega_interface/sroms/8700339.rom"
+  #   topic_name: "world_tracker"
+
+  # - id: 2
+  #   srom: "~/Desktop/ros2_/ur5_control/src/polaris_vega_interface/sroms/8700340.rom"
+  #   topic_name: "needle_tracker"
