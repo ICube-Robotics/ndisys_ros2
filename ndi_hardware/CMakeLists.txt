@@ -17,8 +17,8 @@ find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 
-set(EXT_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/ndi_capi")
-include_directories("${EXT_LIBS_DIR}/include")
+set(EXT_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/ndi_capi)
+include_directories(${EXT_LIBS_DIR}/include)
 add_library(ndicapi_library SHARED IMPORTED GLOBAL)
 set_target_properties(ndicapi_library PROPERTIES IMPORTED_LOCATION ${EXT_LIBS_DIR}/libndicapi.so)
 
@@ -33,7 +33,7 @@ target_include_directories(
   ${PROJECT_NAME}
   PRIVATE
   include
-  ${EXT_LIBS_DIR}/include
+  ${EXT_LIBS_DIR}
 )
 ament_target_dependencies(
   ${PROJECT_NAME}

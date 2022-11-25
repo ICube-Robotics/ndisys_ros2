@@ -32,9 +32,10 @@
 #include "ndi_hardware/visibility_control.h"
 #include <rclcpp/rclcpp.hpp>
 
-#include "ndi_capi/CombinedApi.h"
-#include "ndi_capi/PortHandleInfo.h"
-#include "ndi_capi/ToolData.h"
+#include "CombinedApi.h"
+#include "PortHandleInfo.h"
+#include "ToolData.h"
+
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
@@ -65,8 +66,7 @@ public:
 private:
   // Store the poses of the trackers 
   std::vector<std::vector<double>> hw_tracker_poses_;
-  // Store one pose of the trackers
-  std::vector<double> tracker_pose_;
+
 
   /** @brief Vector holding tool names (file paths) in order of YAML file*/
   std::vector<std::string> tool_names_;
