@@ -32,9 +32,9 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include "ndi_capi/CombinedApi.h"
-#include "ndi_capi/PortHandleInfo.h"
-#include "ndi_capi/ToolData.h"
+#include "CombinedApi.h"
+#include "PortHandleInfo.h"
+#include "ToolData.h"
 
 #include "yaml-cpp/yaml.h"
 
@@ -52,7 +52,7 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
     capi_ = CombinedApi();
 
     // /* Get params ........................................................... */
-    std::string ndi_config_file = info_.hardware_parameters["ndi_config_file"];
+    std::string ndi_config_file = "/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/config/polaris_vega.yaml";//info_.hardware_parameters["ndi_config_file"];
     getParamsFromFile(ndi_config_file);
 
     /* Attemp Connect ....................................................... */
@@ -97,7 +97,7 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
 
     hw_tracker_poses_.resize(info_.sensors.size(), 
         std::vector<double>(7, std::numeric_limits<double>::quiet_NaN()));
-    tracker_pose_.resize(info_.sensors.size(), 7);
+
 
     return CallbackReturn::SUCCESS;
 }
@@ -106,7 +106,7 @@ std::vector<hardware_interface::StateInterface>
 NdiSensorHardwareInterface::export_state_interfaces()
 {
     std::vector<hardware_interface::StateInterface> state_interfaces;
-    for (uint s = 0; s < info_.sensors.size(); s++){
+    for (uint s = 0; s < info_.sensors.size(); s++){ // num
         for (uint i = 0; i < info_.sensors[s].state_interfaces.size(); i++){
             state_interfaces.emplace_back(hardware_interface::StateInterface(
             info_.sensors[s].name, info_.sensors[s].state_interfaces[i].name, &hw_tracker_poses_[s][i]));
@@ -118,6 +118,7 @@ NdiSensorHardwareInterface::export_state_interfaces()
 // ------------------------------------------------------------------------------------------
 CallbackReturn NdiSensorHardwareInterface::on_activate(const rclcpp_lifecycle::State & previous_state)
 {
+   
     int tracking_return_code = capi_.startTracking();
     onErrorPrintDebugMessage("Tracking: ", tracking_return_code);
     return (tracking_return_code < 0 ? CallbackReturn::FAILURE : CallbackReturn::SUCCESS);  
@@ -131,6 +132,7 @@ CallbackReturn NdiSensorHardwareInterface::on_deactivate(const rclcpp_lifecycle:
 hardware_interface::return_type NdiSensorHardwareInterface::read(
     const rclcpp::Time & time, const rclcpp::Duration & period)
 {
+    
     newToolData_ = apiSupportsBX2_
                         ? capi_.getTrackingDataBX2("--6d=tools --3d=tools --sensor=none --1d=none")
                         : capi_.getTrackingDataBX(TrackingReplyOption::TransformData |
@@ -147,7 +149,11 @@ hardware_interface::return_type NdiSensorHardwareInterface::read(
         }
     }
 
+    // Store one pose of the trackers
+    std::vector<double> tracker_pose_(7);
+    
     for (size_t t = 0; t < enabledTools_.size(); t++){
+        
         enabledTools_[t].dataIsNew = false;
 
         tracker_pose_.at(0) = enabledTools_[t].transform.q0;
@@ -157,12 +163,18 @@ hardware_interface::return_type NdiSensorHardwareInterface::read(
         tracker_pose_.at(4) = enabledTools_[t].transform.tx;
         tracker_pose_.at(5) = enabledTools_[t].transform.ty;
         tracker_pose_.at(6) = enabledTools_[t].transform.tz;
+        //std::cout << tracker_pose_.at(6) << std::endl;
 
         hw_tracker_poses_.at(t) = tracker_pose_;
     }
+    
     return hardware_interface::return_type::OK;
 }
 // ------------------------------------------------------------------------------------------
+
+/* -------------------------------------------------------------------------- */
+/*                                NDI Functions                               */
+/* -------------------------------------------------------------------------- */
 void NdiSensorHardwareInterface::onErrorPrintDebugMessage(std::string methodName, int errorCode)
 {
     if (errorCode < 0){
@@ -233,6 +245,11 @@ void NdiSensorHardwareInterface::getParamsFromFile(std::string config_file)
     }
     return;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                             End: NDI Functions                             */
+/* -------------------------------------------------------------------------- */
+
 }  // namespace ndi_hardware
 // ------------------------------------------------------------------------------------------
 #include "pluginlib/class_list_macros.hpp"

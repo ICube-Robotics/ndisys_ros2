@@ -1,5 +1,7 @@
 <library path="rigid_pose_broadcaster">
-  <class name="rigid_pose_broadcaster/RigidPoseBroadcaster" type="rigid_pose_broadcaster::RigidPoseBroadcaster" base_class_type="controller_interface::ControllerInterface">
+  <class name="rigid_pose_broadcaster/RigidPoseBroadcaster"
+   type="rigid_pose_broadcaster::RigidPoseBroadcaster"
+    base_class_type="controller_interface::ControllerInterface">
   <description>
     The rigid pose broadcaster publishes the current NDI rigid body poses.
   </description>

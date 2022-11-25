@@ -14,9 +14,6 @@ controllers_file = "polaris_broadcaster.yaml"
 
 def launch_setup(context, *args, **kwargs):
 
-
- 
-
     urdf_path = os.path.join(get_package_share_directory('polaris_description'), 'config', 'polaris.config.xacro')
     desc_file = xacro.parse(open(urdf_path, 'r'))
     xacro.process_doc(desc_file)
@@ -28,6 +25,9 @@ def launch_setup(context, *args, **kwargs):
     polaris_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
+        #name="pol_pub",
+        #prefix=["gdbserver localhost:3000"],
+        emulate_tty=True,
         parameters=[polaris_description, polaris_controller_config],
         output={"screen"
         },

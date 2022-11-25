@@ -3,7 +3,7 @@ publish_period_ms: 20
 
 trackers:
   - id: 0
-    srom: "/home/adnan/Desktop/ros2/ndi/ndisys_ros2/polaris_description/srom/UfoGuideTransducer.rom"
+    srom: "/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/UfoGuideTransducer.rom"
     topic_name: "fus_tracker"
 
   # - id: 1
