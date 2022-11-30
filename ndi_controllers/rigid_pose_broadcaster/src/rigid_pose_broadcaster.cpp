@@ -38,6 +38,7 @@
 #include "rcpputils/split.hpp"
 #include "rcutils/logging_macros.h"
 #include "std_msgs/msg/header.hpp"
+#include "geometry_msgs/msg/pose.hpp"
 
 
 namespace rclcpp_lifecycle
@@ -130,7 +131,8 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
 
     rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
     rigid_pose_msg.header.frame_id = "polaris_base";
-    // update pose message
+    // populate pose message
+    rigid_pose_msg.poses.push_back(geometry_msgs::msg::Pose());
     rigid_pose_msg.poses[0].position.x = get_value(name_if_value_mapping_, "rigidbody1", "pose.position.x");
     rigid_pose_msg.poses[0].position.y = get_value(name_if_value_mapping_, "rigidbody1", "pose.position.y");
     rigid_pose_msg.poses[0].position.z = get_value(name_if_value_mapping_, "rigidbody1", "pose.position.z");
