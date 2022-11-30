@@ -32,9 +32,9 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include "CombinedApi.h"
-#include "PortHandleInfo.h"
-#include "ToolData.h"
+#include "ndi_capi/CombinedApi.h"
+#include "ndi_capi/PortHandleInfo.h"
+#include "ndi_capi/ToolData.h"
 
 #include "yaml-cpp/yaml.h"
 
