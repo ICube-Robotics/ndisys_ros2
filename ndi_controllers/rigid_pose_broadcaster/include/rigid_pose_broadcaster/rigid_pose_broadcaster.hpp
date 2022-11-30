@@ -70,7 +70,7 @@ protected:
   //  For the PoseStamped message,
   std::shared_ptr<rclcpp::Publisher<ndi_msgs::msg::RigidArray>> rigid_pose_publisher_;
   std::shared_ptr<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>> realtime_rigid_pose_publisher_;
-  std::unordered_map<std::string, std::unordered_map<std::string, double>> name_if_value_mapping_;
+  std::unordered_map<std::string, double> name_if_value_mapping_;
 
 };
 

@@ -99,14 +99,13 @@ RigidPoseBroadcaster::on_deactivate(const rclcpp_lifecycle::State & /*previous_s
 }
 
 double get_value(
-  const std::unordered_map<std::string, std::unordered_map<std::string, double>> & map,
-  const std::string & name, const std::string & interface_name)
+  const std::unordered_map<std::string, double> & map,
+  const std::string & name)
 {
-  const auto & interfaces_and_values = map.at(name);
-  const auto interface_and_value = interfaces_and_values.find(interface_name);
-  if (interface_and_value != interfaces_and_values.cend())
+  auto it = map.find(name);
+  if (it != map.end())
   {
-    return interface_and_value->second;
+    return map.at(name);
   }
   else
   {
@@ -118,11 +117,8 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
 {
   for (const auto & state_interface : state_interfaces_)
   {
-    name_if_value_mapping_[state_interface.get_name()][state_interface.get_interface_name()] =
-      state_interface.get_value();
-    RCLCPP_DEBUG(
-      get_node()->get_logger(), "%s/%s: %f\n", state_interface.get_name().c_str(),
-      state_interface.get_interface_name().c_str(), state_interface.get_value());
+    name_if_value_mapping_[state_interface.get_name()] = state_interface.get_value();
+    RCLCPP_DEBUG(get_node()->get_logger(), "%s: %f\n", state_interface.get_name().c_str(), state_interface.get_value());
   }
 
   if (realtime_rigid_pose_publisher_ && realtime_rigid_pose_publisher_->trylock())
@@ -130,16 +126,17 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
     auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
 
     rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
+    // TODO: This should come from a paramter
     rigid_pose_msg.header.frame_id = "polaris_base";
     // populate pose message
     rigid_pose_msg.poses.push_back(geometry_msgs::msg::Pose());
-    rigid_pose_msg.poses[0].position.x = get_value(name_if_value_mapping_, "rigidbody1", "pose.position.x");
-    rigid_pose_msg.poses[0].position.y = get_value(name_if_value_mapping_, "rigidbody1", "pose.position.y");
-    rigid_pose_msg.poses[0].position.z = get_value(name_if_value_mapping_, "rigidbody1", "pose.position.z");
-    rigid_pose_msg.poses[0].orientation.w = get_value(name_if_value_mapping_, "rigidbody1", "pose.orientation.w");
-    rigid_pose_msg.poses[0].orientation.x = get_value(name_if_value_mapping_, "rigidbody1", "pose.orientation.x");
-    rigid_pose_msg.poses[0].orientation.y = get_value(name_if_value_mapping_, "rigidbody1", "pose.orientation.y");
-    rigid_pose_msg.poses[0].orientation.z = get_value(name_if_value_mapping_, "rigidbody1", "pose.orientation.z");
+    rigid_pose_msg.poses[0].position.x = get_value(name_if_value_mapping_, "rigidbody1/pose.position.x");
+    rigid_pose_msg.poses[0].position.y = get_value(name_if_value_mapping_, "rigidbody1/pose.position.y");
+    rigid_pose_msg.poses[0].position.z = get_value(name_if_value_mapping_, "rigidbody1/pose.position.z");
+    rigid_pose_msg.poses[0].orientation.w = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.w");
+    rigid_pose_msg.poses[0].orientation.x = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.x");
+    rigid_pose_msg.poses[0].orientation.y = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.y");
+    rigid_pose_msg.poses[0].orientation.z = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.z");
 
     realtime_rigid_pose_publisher_->unlockAndPublish();
   }
