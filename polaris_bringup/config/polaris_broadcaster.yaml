@@ -13,6 +13,10 @@ controller_manager:
 rigid_pose_broadcaster:
   ros__parameters:  
     state_publish_rate: 10
+    sensor_names:
+      - fus_tracker
+    senson_ids:
+      - 1998
     state_interface_names:
       - pose.position.x
       - pose.position.y

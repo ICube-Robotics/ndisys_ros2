@@ -25,7 +25,6 @@ def launch_setup(context, *args, **kwargs):
     polaris_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        #name="pol_pub",
         #prefix=["gdbserver localhost:3000"],
         emulate_tty=True,
         parameters=[polaris_description, polaris_controller_config],
