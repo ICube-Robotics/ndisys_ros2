@@ -231,12 +231,15 @@ std::string NdiSensorHardwareInterface::getToolInfo(std::string toolHandle){
 // ------------------------------------------------------------------------------------------
 void NdiSensorHardwareInterface::getParamsFromDesc()
 {
-    ndi_ip_ = "192.155.1.80";//info_.hardware_parameters["ndi_ip"];  //params["polaris_ip"].as<std::string>();
+    ndi_ip_ = info_.hardware_parameters["ndi_ip"];  //params["polaris_ip"].as<std::string>();
     tool_count_ = info_.sensors.size();
     std::cout << "Loading " << tool_count_ << " tools" << std::endl;
-    for (int i = 0; i < tool_count_; i++)
+    for (size_t i = 0; i < tool_count_; i++)
     {
-        tool_names_.push_back("/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/8700340.rom");
+        tool_names_.push_back(info_.sensors.at(i).parameters["srom"]);
+        RCLCPP_INFO_STREAM(rclcpp::get_logger("NdiSensorHardwareInterface"),
+                        "Reading tracker [" << info_.sensors.at(i).name << "] in "
+                        << info_.sensors.at(i).parameters["srom"]);
     }
     return;
 }

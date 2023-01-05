@@ -15,8 +15,10 @@ rigid_pose_broadcaster:
     state_publish_rate: 10
     sensor_names:
       - fus_tracker
-    senson_ids:
+      - needle
+    sensor_ids:
       - 1998
+      - 2023
     state_interface_names:
       - pose.position.x
       - pose.position.y

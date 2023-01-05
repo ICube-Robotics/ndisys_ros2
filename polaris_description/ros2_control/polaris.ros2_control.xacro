@@ -12,7 +12,7 @@
         <state_interface name="pose.orientation.z"/>
         <state_interface name="pose.orientation.w"/>
         <!-- user parameters -->
-        <param name="srom">"${srom}"</param>
+        <param name="srom">${srom}</param>
       </sensor>
 
   </xacro:macro>

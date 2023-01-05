@@ -129,16 +129,15 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
     realtime_rigid_pose_publisher_->msg_.poses.clear();
     realtime_rigid_pose_publisher_->msg_.ids.clear();
 
-    for(size_t iter_ = 0 ; iter_ < sensor_names.size(); iter_ ++)
+    auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
+    rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
+    // TODO: This should come from a paramter
+    rigid_pose_msg.header.frame_id = "polaris_base";
+
+    for(size_t iter_ = 0 ; iter_ < sensor_names.size(); iter_++)
     {
       auto sensor_name = sensor_names.at(iter_);
       auto sensor_id = sensor_ids.at(iter_);
-
-      auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
-
-      rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
-      // TODO: This should come from a paramter
-      rigid_pose_msg.header.frame_id = "polaris_base";
       
       auto p = geometry_msgs::msg::Pose();
       
