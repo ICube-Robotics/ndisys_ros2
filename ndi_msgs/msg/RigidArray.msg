@@ -7,6 +7,9 @@ std_msgs/Header header
 #Array of point IDs.
 int32[] ids
 
+#If tracker is inbound measurement pyramid
+bool[] inbound
+
 # Array of 3d poses. Each Pose should be interpreted as a 3d pose
 # in the frame given in the header.
 geometry_msgs/Pose[] poses

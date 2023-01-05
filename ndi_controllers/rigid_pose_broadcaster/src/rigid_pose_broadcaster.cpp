@@ -129,6 +129,7 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
   {
     realtime_rigid_pose_publisher_->msg_.poses.clear();
     realtime_rigid_pose_publisher_->msg_.ids.clear();
+    realtime_rigid_pose_publisher_->msg_.inbound.clear();
 
     auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
     rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
@@ -142,18 +143,34 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
       
       auto p = geometry_msgs::msg::Pose();
       
-      p.position.x = get_value(name_if_value_mapping_, sensor_name+"/pose.position.x");
-      p.position.y = get_value(name_if_value_mapping_, sensor_name+"/pose.position.y");
-      p.position.z = get_value(name_if_value_mapping_, sensor_name+"/pose.position.z");
-      p.orientation.w = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.w");
-      p.orientation.x = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.x");
-      p.orientation.y = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.y");
-      p.orientation.z = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.z");
+      if(abs(get_value(name_if_value_mapping_, sensor_name+"/pose.position.x")) < 10000 )
+      {
+        p.position.x = get_value(name_if_value_mapping_, sensor_name+"/pose.position.x");
+        p.position.y = get_value(name_if_value_mapping_, sensor_name+"/pose.position.y");
+        p.position.z = get_value(name_if_value_mapping_, sensor_name+"/pose.position.z");
+        p.orientation.w = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.w");
+        p.orientation.x = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.x");
+        p.orientation.y = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.y");
+        p.orientation.z = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.z");
 
-      rigid_pose_msg.poses.push_back(p);
-      rigid_pose_msg.ids.push_back(sensor_id);
+        rigid_pose_msg.poses.push_back(p);
+        rigid_pose_msg.ids.push_back(sensor_id);
+        rigid_pose_msg.inbound.push_back(true);
+      }
+      else{
+        // p.position.x = std::numeric_limits<double>::quiet_NaN();
+        // p.position.y = std::numeric_limits<double>::quiet_NaN();
+        // p.position.z = std::numeric_limits<double>::quiet_NaN();
+        // p.orientation.w = std::numeric_limits<double>::quiet_NaN();
+        // p.orientation.x = std::numeric_limits<double>::quiet_NaN();
+        // p.orientation.y = std::numeric_limits<double>::quiet_NaN();
+        // p.orientation.z = std::numeric_limits<double>::quiet_NaN();
+
+        rigid_pose_msg.poses.push_back(p);
+        rigid_pose_msg.ids.push_back(sensor_id);
+        rigid_pose_msg.inbound.push_back(false);
+      }
     }
-    
     realtime_rigid_pose_publisher_->unlockAndPublish();    
   }
 
