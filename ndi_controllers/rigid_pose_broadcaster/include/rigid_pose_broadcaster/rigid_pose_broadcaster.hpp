@@ -75,6 +75,8 @@ protected:
   std::vector<std::string> sensor_names;
   std::vector<int64_t> sensor_ids;
 
+  std::string frame_id;
+
 };
 
 }  // namespace rigid_pose_broadcaster

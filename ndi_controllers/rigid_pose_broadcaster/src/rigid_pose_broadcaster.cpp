@@ -80,7 +80,7 @@ RigidPoseBroadcaster::on_configure(const rclcpp_lifecycle::State & /*previous_st
 
     this->sensor_names = this->get_node()->get_parameter("sensor_names").as_string_array();
     this->sensor_ids = this->get_node()->get_parameter("sensor_ids").as_integer_array();
-  
+    this->frame_id = this->get_node()->get_parameter("world_frame").as_string();
   }
   catch (const std::exception & e){
     // get_node() may throw, logging raw here
@@ -133,7 +133,7 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
     auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
     rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
     // TODO: This should come from a paramter
-    rigid_pose_msg.header.frame_id = "polaris_base";
+    rigid_pose_msg.header.frame_id = this->frame_id;
 
     for(size_t iter_ = 0 ; iter_ < sensor_names.size(); iter_++)
     {

@@ -19,14 +19,7 @@ rigid_pose_broadcaster:
     sensor_ids:
       - 1998
       - 2023
-    state_interface_names:
-      - pose.position.x
-      - pose.position.y
-      - pose.position.z
-      - pose.orientation.x
-      - pose.orientation.y
-      - pose.orientation.z
-      - pose.orientation.w
+    world_frame: polaris_frame
 
 
 joint_state_broadcaster:
