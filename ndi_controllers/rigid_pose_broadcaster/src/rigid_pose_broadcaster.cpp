@@ -115,6 +115,9 @@ double get_value(
 
 controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Time & time, const rclcpp::Duration & period)
 {
+  auto sensor_names = this->get_node()->get_parameter("sensor_names").as_string_array();
+  auto sensor_ids = this->get_node()->get_parameter("sensor_ids").as_integer_array();
+  
   for (const auto & state_interface : state_interfaces_)
   {
     name_if_value_mapping_[state_interface.get_name()] = state_interface.get_value();
@@ -123,22 +126,35 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
 
   if (realtime_rigid_pose_publisher_ && realtime_rigid_pose_publisher_->trylock())
   {
-    auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
+    realtime_rigid_pose_publisher_->msg_.poses.clear();
+    realtime_rigid_pose_publisher_->msg_.ids.clear();
 
-    rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
-    // TODO: This should come from a paramter
-    rigid_pose_msg.header.frame_id = "polaris_base";
-    // populate pose message
-    rigid_pose_msg.poses.push_back(geometry_msgs::msg::Pose());
-    rigid_pose_msg.poses[0].position.x = get_value(name_if_value_mapping_, "rigidbody1/pose.position.x");
-    rigid_pose_msg.poses[0].position.y = get_value(name_if_value_mapping_, "rigidbody1/pose.position.y");
-    rigid_pose_msg.poses[0].position.z = get_value(name_if_value_mapping_, "rigidbody1/pose.position.z");
-    rigid_pose_msg.poses[0].orientation.w = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.w");
-    rigid_pose_msg.poses[0].orientation.x = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.x");
-    rigid_pose_msg.poses[0].orientation.y = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.y");
-    rigid_pose_msg.poses[0].orientation.z = get_value(name_if_value_mapping_, "rigidbody1/pose.orientation.z");
+    for(size_t iter_ = 0 ; iter_ < sensor_names.size(); iter_ ++)
+    {
+      auto sensor_name = sensor_names.at(iter_);
+      auto sensor_id = sensor_ids.at(iter_);
 
-    realtime_rigid_pose_publisher_->unlockAndPublish();
+      auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
+
+      rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
+      // TODO: This should come from a paramter
+      rigid_pose_msg.header.frame_id = "polaris_base";
+      
+      auto p = geometry_msgs::msg::Pose();
+      
+      p.position.x = get_value(name_if_value_mapping_, sensor_name+"/pose.position.x");
+      p.position.y = get_value(name_if_value_mapping_, sensor_name+"/pose.position.y");
+      p.position.z = get_value(name_if_value_mapping_, sensor_name+"/pose.position.z");
+      p.orientation.w = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.w");
+      p.orientation.x = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.x");
+      p.orientation.y = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.y");
+      p.orientation.z = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.z");
+
+      rigid_pose_msg.poses.push_back(p);
+      rigid_pose_msg.ids.push_back(sensor_id);
+    }
+    
+    realtime_rigid_pose_publisher_->unlockAndPublish();    
   }
 
   return controller_interface::return_type::OK;

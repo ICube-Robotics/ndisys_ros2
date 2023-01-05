@@ -36,9 +36,6 @@
 #include "ndi_capi/PortHandleInfo.h"
 #include "ndi_capi/ToolData.h"
 
-#include "yaml-cpp/yaml.h"
-
-
 namespace ndi_hardware
 {
 // ------------------------------------------------------------------------------------------
@@ -51,9 +48,8 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
 
     capi_ = CombinedApi();
 
-    // /* Get params ........................................................... */
-    std::string ndi_config_file = "/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/config/polaris_vega.yaml";//info_.hardware_parameters["ndi_config_file"];
-    getParamsFromFile(ndi_config_file);
+    /* Get params ........................................................... */
+    getParamsFromDesc();
 
     /* Attemp Connect ....................................................... */
     if (capi_.connect(ndi_ip_) != 0){
@@ -233,15 +229,14 @@ std::string NdiSensorHardwareInterface::getToolInfo(std::string toolHandle){
     return outputString;
 }
 // ------------------------------------------------------------------------------------------
-void NdiSensorHardwareInterface::getParamsFromFile(std::string config_file)
+void NdiSensorHardwareInterface::getParamsFromDesc()
 {
-    auto params = YAML::LoadFile(config_file);
-    ndi_ip_ = params["polaris_ip"].as<std::string>();
-    tool_count_ = params["trackers"].size();
+    ndi_ip_ = "192.155.1.80";//info_.hardware_parameters["ndi_ip"];  //params["polaris_ip"].as<std::string>();
+    tool_count_ = info_.sensors.size();
     std::cout << "Loading " << tool_count_ << " tools" << std::endl;
     for (int i = 0; i < tool_count_; i++)
     {
-        tool_names_.push_back(params["trackers"][i]["srom"].as<std::string>());
+        tool_names_.push_back("/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/8700340.rom");
     }
     return;
 }

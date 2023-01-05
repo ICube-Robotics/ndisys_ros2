@@ -120,7 +120,7 @@ private:
   /**
    * @brief Returns a rclcpp::Parameter object with params inside.
    */
-  void getParamsFromFile(std::string config_file);
+  void getParamsFromDesc();
 
 };
 
