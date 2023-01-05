@@ -38,3 +38,16 @@ joint_state_broadcaster:
       - pose.orientation.y
       - pose.orientation.z
       - pose.orientation.w
+
+
+joint_state_broadcaster:
+  ros__parameters:
+    state_publish_rate: 10
+    state_interface_names:
+      - pose.position.x
+      - pose.position.y
+      - pose.position.z
+      - pose.orientation.x
+      - pose.orientation.y
+      - pose.orientation.z
+      - pose.orientation.w
