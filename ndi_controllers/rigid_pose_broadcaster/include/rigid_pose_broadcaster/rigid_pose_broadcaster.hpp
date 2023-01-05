@@ -72,6 +72,9 @@ protected:
   std::shared_ptr<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>> realtime_rigid_pose_publisher_;
   std::unordered_map<std::string, double> name_if_value_mapping_;
 
+  std::vector<std::string> sensor_names;
+  std::vector<int64_t> sensor_ids;
+
 };
 
 }  // namespace rigid_pose_broadcaster

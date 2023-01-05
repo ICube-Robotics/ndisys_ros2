@@ -77,6 +77,10 @@ RigidPoseBroadcaster::on_configure(const rclcpp_lifecycle::State & /*previous_st
   try{
     rigid_pose_publisher_ = get_node()->create_publisher<ndi_msgs::msg::RigidArray>("rigid_poses", rclcpp::SystemDefaultsQoS());
     realtime_rigid_pose_publisher_ = std::make_shared<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>>(rigid_pose_publisher_);
+
+    this->sensor_names = this->get_node()->get_parameter("sensor_names").as_string_array();
+    this->sensor_ids = this->get_node()->get_parameter("sensor_ids").as_integer_array();
+  
   }
   catch (const std::exception & e){
     // get_node() may throw, logging raw here
@@ -115,9 +119,6 @@ double get_value(
 
 controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Time & time, const rclcpp::Duration & period)
 {
-  auto sensor_names = this->get_node()->get_parameter("sensor_names").as_string_array();
-  auto sensor_ids = this->get_node()->get_parameter("sensor_ids").as_integer_array();
-  
   for (const auto & state_interface : state_interfaces_)
   {
     name_if_value_mapping_[state_interface.get_name()] = state_interface.get_value();
@@ -136,8 +137,8 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
 
     for(size_t iter_ = 0 ; iter_ < sensor_names.size(); iter_++)
     {
-      auto sensor_name = sensor_names.at(iter_);
-      auto sensor_id = sensor_ids.at(iter_);
+      auto sensor_name = this->sensor_names.at(iter_);
+      auto sensor_id = this->sensor_ids.at(iter_);
       
       auto p = geometry_msgs::msg::Pose();
       
