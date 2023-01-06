@@ -32,9 +32,9 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include "ndi_capi/CombinedApi.h"
-#include "ndi_capi/PortHandleInfo.h"
-#include "ndi_capi/ToolData.h"
+#include "ndi_capi/include/CombinedApi.h"
+#include "ndi_capi/include/PortHandleInfo.h"
+#include "ndi_capi/include/ToolData.h"
 
 namespace ndi_hardware
 {
