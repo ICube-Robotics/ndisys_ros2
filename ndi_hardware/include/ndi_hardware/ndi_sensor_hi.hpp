@@ -32,9 +32,9 @@
 #include "ndi_hardware/visibility_control.h"
 #include <rclcpp/rclcpp.hpp>
 
-#include "ndi_capi/CombinedApi.h"
-#include "ndi_capi/PortHandleInfo.h"
-#include "ndi_capi/ToolData.h"
+#include "ndi_capi/include/CombinedApi.h"
+#include "ndi_capi/include/PortHandleInfo.h"
+#include "ndi_capi/include/ToolData.h"
 
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
