@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="ndi_sensor" params="name srom">
+  <xacro:include filename="$(find polaris_description)/ros2_control/sensor_macro.xacro" />
 
-      <sensor name="${name}">
-        <state_interface name="pose.position.x"/>
-        <state_interface name="pose.position.y"/>
-        <state_interface name="pose.position.z"/>
-        <state_interface name="pose.orientation.x"/>
-        <state_interface name="pose.orientation.y"/>
-        <state_interface name="pose.orientation.z"/>
-        <state_interface name="pose.orientation.w"/>
-        <!-- user parameters -->
-        <param name="srom">${srom}</param>
-      </sensor>
+  <xacro:macro name="ndi_sensor" params="name">
+
+    <ros2_control name="${name}" type="sensor">
+
+      <hardware>
+        <plugin>ndi_hardware/NdiSensorHardwareInterface</plugin>
+        <param name="ndi_ip">192.155.1.80</param>
+      </hardware>
+
+      <!-- repeat this part for multiple trackers -->
+      <xacro:tracker name="fus_tracker"
+        srom="/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/UfoGuideTransducer.rom" />
+      <xacro:tracker name="needle"
+        srom="/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/8700340.rom" />
+
+    </ros2_control>
 
   </xacro:macro>
 

@@ -4,18 +4,6 @@
     <!-- Import polaris ros2_control description -->
     <xacro:include filename="$(find polaris_description)/ros2_control/polaris.ros2_control.xacro" />
 
-    <ros2_control name="polaris" type="sensor">
-
-        <hardware>
-          <plugin>ndi_hardware/NdiSensorHardwareInterface</plugin>
-          <param name="ndi_ip">192.155.1.80</param>
-        </hardware>
-
-        <!-- repeat this part for multiple trackers -->
-        <xacro:ndi_sensor name="fus_tracker" srom="/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/UfoGuideTransducer.rom"/>
-        <xacro:ndi_sensor name="needle" srom="/home/adnan/Desktop/ros2/ndisys_ros2/polaris_description/srom/8700340.rom"/>
-
-    </ros2_control>
-
+    <xacro:ndi_sensor name="polaris"/>
 
 </robot>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="tracker" params="name srom">
+
+      <sensor name="${name}">
+        <state_interface name="pose.position.x"/>
+        <state_interface name="pose.position.y"/>
+        <state_interface name="pose.position.z"/>
+        <state_interface name="pose.orientation.x"/>
+        <state_interface name="pose.orientation.y"/>
+        <state_interface name="pose.orientation.z"/>
+        <state_interface name="pose.orientation.w"/>
+        <!-- user parameters -->
+        <param name="srom">${srom}</param>
+      </sensor>
+
+  </xacro:macro>
+
+</robot>
