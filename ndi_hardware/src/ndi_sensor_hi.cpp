@@ -156,10 +156,9 @@ hardware_interface::return_type NdiSensorHardwareInterface::read(
         tracker_pose_.at(1) = enabledTools_[t].transform.qx;
         tracker_pose_.at(2) = enabledTools_[t].transform.qy;
         tracker_pose_.at(3) = enabledTools_[t].transform.qz;
-        tracker_pose_.at(4) = enabledTools_[t].transform.tx;
-        tracker_pose_.at(5) = enabledTools_[t].transform.ty;
-        tracker_pose_.at(6) = enabledTools_[t].transform.tz;
-        //std::cout << tracker_pose_.at(6) << std::endl;
+        tracker_pose_.at(4) = enabledTools_[t].transform.tx / 1000.0;
+        tracker_pose_.at(5) = enabledTools_[t].transform.ty / 1000.0;
+        tracker_pose_.at(6) = enabledTools_[t].transform.tz / 1000.0;
 
         hw_tracker_poses_.at(t) = tracker_pose_;
     }
