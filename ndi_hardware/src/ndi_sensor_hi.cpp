@@ -152,13 +152,15 @@ hardware_interface::return_type NdiSensorHardwareInterface::read(
         
         enabledTools_[t].dataIsNew = false;
 
-        tracker_pose_.at(0) = enabledTools_[t].transform.q0;
-        tracker_pose_.at(1) = enabledTools_[t].transform.qx;
-        tracker_pose_.at(2) = enabledTools_[t].transform.qy;
-        tracker_pose_.at(3) = enabledTools_[t].transform.qz;
-        tracker_pose_.at(4) = enabledTools_[t].transform.tx / 1000.0;
-        tracker_pose_.at(5) = enabledTools_[t].transform.ty / 1000.0;
-        tracker_pose_.at(6) = enabledTools_[t].transform.tz / 1000.0;
+        
+        tracker_pose_.at(0) = enabledTools_[t].transform.tx / 1000.0;
+        tracker_pose_.at(1) = enabledTools_[t].transform.ty / 1000.0;
+        tracker_pose_.at(2) = enabledTools_[t].transform.tz / 1000.0;
+
+        tracker_pose_.at(3) = enabledTools_[t].transform.q0;
+        tracker_pose_.at(4) = enabledTools_[t].transform.qx;
+        tracker_pose_.at(5) = enabledTools_[t].transform.qy;
+        tracker_pose_.at(6) = enabledTools_[t].transform.qz;
 
         hw_tracker_poses_.at(t) = tracker_pose_;
     }
