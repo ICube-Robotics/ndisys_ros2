@@ -78,9 +78,9 @@ RigidPoseBroadcaster::on_configure(const rclcpp_lifecycle::State & /*previous_st
     rigid_pose_publisher_ = get_node()->create_publisher<ndi_msgs::msg::RigidArray>("rigid_poses", rclcpp::SystemDefaultsQoS());
     realtime_rigid_pose_publisher_ = std::make_shared<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>>(rigid_pose_publisher_);
 
-    this->sensor_names = this->get_node()->get_parameter("sensor_names").as_string_array();
-    this->sensor_ids = this->get_node()->get_parameter("sensor_ids").as_integer_array();
-    this->frame_id = this->get_node()->get_parameter("world_frame").as_string();
+    this->sensorNames = this->get_node()->get_parameter("sensor_names").as_string_array();
+    this->sensorIDs = this->get_node()->get_parameter("sensor_ids").as_integer_array();
+    this->frameID = this->get_node()->get_parameter("world_frame").as_string();
   }
   catch (const std::exception & e){
     // get_node() may throw, logging raw here
@@ -131,44 +131,35 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
     realtime_rigid_pose_publisher_->msg_.ids.clear();
     realtime_rigid_pose_publisher_->msg_.inbound.clear();
 
-    auto & rigid_pose_msg = realtime_rigid_pose_publisher_->msg_;
-    rigid_pose_msg.header.stamp = get_node()->get_clock()->now();
-    // TODO: This should come from a paramter
-    rigid_pose_msg.header.frame_id = this->frame_id;
+    auto & rigidPoseMsg = realtime_rigid_pose_publisher_->msg_;
+    rigidPoseMsg.header.stamp = get_node()->get_clock()->now();
+    rigidPoseMsg.header.frame_id = this->frameID;
 
-    for(size_t iter_ = 0 ; iter_ < sensor_names.size(); iter_++)
+    for(size_t iter_ = 0 ; iter_ < sensorNames.size(); iter_++)
     {
-      auto sensor_name = this->sensor_names.at(iter_);
-      auto sensor_id = this->sensor_ids.at(iter_);
+      auto sensorName = this->sensorNames.at(iter_);
+      auto sensorID = this->sensorIDs.at(iter_);
       
-      auto p = geometry_msgs::msg::Pose();
+      auto tempPose = geometry_msgs::msg::Pose();
       
-      if(abs(get_value(name_if_value_mapping_, sensor_name+"/pose.position.x")) < 10000 )
+      if(abs(get_value(name_if_value_mapping_, sensorName+"/pose.position.x")) < 10000 )
       {
-        p.position.x = get_value(name_if_value_mapping_, sensor_name+"/pose.position.x");
-        p.position.y = get_value(name_if_value_mapping_, sensor_name+"/pose.position.y");
-        p.position.z = get_value(name_if_value_mapping_, sensor_name+"/pose.position.z");
-        p.orientation.w = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.w");
-        p.orientation.x = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.x");
-        p.orientation.y = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.y");
-        p.orientation.z = get_value(name_if_value_mapping_, sensor_name+"/pose.orientation.z");
+        tempPose.position.x = get_value(name_if_value_mapping_, sensorName+"/pose.position.x");
+        tempPose.position.y = get_value(name_if_value_mapping_, sensorName+"/pose.position.y");
+        tempPose.position.z = get_value(name_if_value_mapping_, sensorName+"/pose.position.z");
+        tempPose.orientation.w = get_value(name_if_value_mapping_, sensorName+"/pose.orientation.w");
+        tempPose.orientation.x = get_value(name_if_value_mapping_, sensorName+"/pose.orientation.x");
+        tempPose.orientation.y = get_value(name_if_value_mapping_, sensorName+"/pose.orientation.y");
+        tempPose.orientation.z = get_value(name_if_value_mapping_, sensorName+"/pose.orientation.z");
 
-        rigid_pose_msg.poses.push_back(p);
-        rigid_pose_msg.ids.push_back(sensor_id);
-        rigid_pose_msg.inbound.push_back(true);
+        rigidPoseMsg.poses.push_back(tempPose);
+        rigidPoseMsg.ids.push_back(sensorID);
+        rigidPoseMsg.inbound.push_back(true);
       }
       else{
-        // p.position.x = std::numeric_limits<double>::quiet_NaN();
-        // p.position.y = std::numeric_limits<double>::quiet_NaN();
-        // p.position.z = std::numeric_limits<double>::quiet_NaN();
-        // p.orientation.w = std::numeric_limits<double>::quiet_NaN();
-        // p.orientation.x = std::numeric_limits<double>::quiet_NaN();
-        // p.orientation.y = std::numeric_limits<double>::quiet_NaN();
-        // p.orientation.z = std::numeric_limits<double>::quiet_NaN();
-
-        rigid_pose_msg.poses.push_back(p);
-        rigid_pose_msg.ids.push_back(sensor_id);
-        rigid_pose_msg.inbound.push_back(false);
+        rigidPoseMsg.poses.push_back(tempPose);
+        rigidPoseMsg.ids.push_back(sensorID);
+        rigidPoseMsg.inbound.push_back(false);
       }
     }
     realtime_rigid_pose_publisher_->unlockAndPublish();    

@@ -48,7 +48,7 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
 
     capi_ = CombinedApi();
 
-    /* Get params ........................................................... */
+    /* Get params  .......................................................... */
     getParamsFromDesc();
 
     /* Attemp Connect ....................................................... */
@@ -85,7 +85,7 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
         return CallbackReturn::FAILURE;
     }
 
-    for (int i = 0; i < portHandles_.size(); i++){
+    for (size_t i = 0; i < portHandles_.size(); i++){
         enabledTools_.push_back(ToolData());
         enabledTools_.back().transform.toolHandle = (uint16_t)capi_.stringToInt(portHandles_[i].getPortHandle());
         enabledTools_.back().toolInfo = getToolInfo(portHandles_[i].getPortHandle());
@@ -211,7 +211,7 @@ void NdiSensorHardwareInterface::initializeAndEnableTools()
     // Initialize and enable tools
     std::vector<PortHandleInfo> portHandles = 
             capi_.portHandleSearchRequest(PortHandleSearchRequestOption::NotInit);
-    for (int i = 0; i < portHandles.size(); i++)
+    for (size_t i = 0; i < portHandles.size(); i++)
     {
         onErrorPrintDebugMessage("capi_.portHandleInitialize()",
                                     capi_.portHandleInitialize(portHandles[i].getPortHandle()));
