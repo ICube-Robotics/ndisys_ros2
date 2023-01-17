@@ -54,4 +54,3 @@
 #endif
 
 #endif  // NDI_HARDWARE__VISIBILITY_CONTROL_H_
-

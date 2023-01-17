@@ -13,4 +13,3 @@ geometry_msgs/Point32[] points
 
 #Array of estimation residuals
 float32[] residuals
-

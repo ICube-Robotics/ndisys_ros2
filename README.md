@@ -1,4 +1,8 @@
 # ndisys_ros2
+[![Licence](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![CI](https://github.com/ICube-Robotics/ndisys_ros2/actions/workflows/ci.yaml/badge.svg)](https://github.com/ICube-Robotics/ndisys_ros2/actions/workflows/ci.yaml)
+
+
 This stack includes drivers for `ros2_control` for communication with NDI measurement systems.
 
 ## Compatible devices
@@ -9,7 +13,7 @@ The driver is compatible with the following NDI measurement systems:
 ## Installation
 ***Required setup : Ubuntu 22.04 LTS***
 
-1.  Install `ros2` packages. The current developpment is based of `ros2 humble`. Installation steps are decribed [here](https://docs.ros.org/en/humble/Installation.html).
+1.  Install `ros2` packages. The current development is based of `ros2 humble`. Installation steps are described [here](https://docs.ros.org/en/humble/Installation.html).
 2. Source your `ros2` environment:
     ```bash
     source /opt/ros/humble/setup.bash
@@ -24,9 +28,8 @@ The driver is compatible with the following NDI measurement systems:
     git clone https://github.com/ICube-Robotics/ndisys_ros2.git src/ndisys_ros2
     rosdep install --ignore-src --from-paths . -y -r
     ```
-5. Download the newest version of NDI CAPI and copy its headers in the `ndi_hardware/external/ndi_capi` directory and the `libndicapi.so` file to `ndi_hardware/external/`.
 
-6. Compile and source the workspace by using:
+5. Compile and source the workspace by using:
     ```bash
     colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --symlink-install
     source install/setup.bash
@@ -34,25 +37,28 @@ The driver is compatible with the following NDI measurement systems:
 ## Running the driver
 - After sourcing ros2 and this package in a shell run:
     ```bash
-    ros2 launch polaris_bringup vega.launch.py
     source install/setup.bash
+    ros2 launch polaris_bringup vega.launch.py
     ```
 
--   Add you markers in the `polaris_description/config/polaris.config.xacro` file using the following macro. All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. It is adviced to load only the markers you are interested in broadcasting. 
+-   Add you markers in the `polaris_description/ros2_control/polaris.ros2_control.xacro` file using the following macro. All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. _It is advised_ to load only the markers you are interested in broadcasting.
 
     ```XML
-    <xacro:ndi_sensor name="costum_name" srom="path_to_rom_bin_file"/>
+    <xacro:tracker name="marker1" srom="path_to_rom_bin_file1" />
+    <xacro:tracker name="marker2" srom="path_to_rom_bin_file2" />
     ```
 
-    All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. It is adviced to load only the markers you are interested in broadcasting. 
 
 
-- You can now choose what trackers to publish in the `polaris_bringup/config/polaris_broadcaster.yaml` file by adding their names in `sensor_names` and IDs in `sensor_ids`. Also, edit the `world_frame` and `state_publish_rate` parameters to match your application. 
+- You can now choose what trackers to publish in the `polaris_bringup/config/polaris_broadcaster.yaml` file by adding their names in `sensor_names` and IDs in `sensor_ids`. Also, edit the `world_frame` and `state_publish_rate` parameters to match your application.
+
+
+    _**One constraint**: Make sure to match_ `sensor_names[]` _content with the names you chose earlier in the `polaris.ros2_control.xacro` file. Preserving order._
 
     Example:
     ```YAML
     rigid_pose_broadcaster:
-        ros__parameters:  
+        ros__parameters:
             state_publish_rate: 10
             sensor_names:
             - marker1

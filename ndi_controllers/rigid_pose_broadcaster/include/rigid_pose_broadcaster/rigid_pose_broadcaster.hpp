@@ -19,19 +19,21 @@
 #ifndef RIGID_POSE_BROADCASTER__RIGID_POSE_BROADCASTER_HPP_
 #define RIGID_POSE_BROADCASTER__RIGID_POSE_BROADCASTER_HPP_
 
+
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <Eigen/Dense>
-#include <Eigen/Geometry>
 
 
-#include "controller_interface/controller_interface.hpp"
 #include "rigid_pose_broadcaster/visibility_control.h"
+#include "realtime_tools/realtime_publisher.h"
+#include "controller_interface/controller_interface.hpp"
 #include "rclcpp_lifecycle/lifecycle_publisher.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
-#include "realtime_tools/realtime_publisher.h"
+
 #include "ndi_msgs/msg/rigid_array.hpp"
 
 namespace rigid_pose_broadcaster
@@ -52,7 +54,8 @@ public:
   controller_interface::InterfaceConfiguration state_interface_configuration() const override;
 
   RIGID_POSE_BROADCASTER_PUBLIC
-  controller_interface::return_type update(const rclcpp::Time & time, const rclcpp::Duration & period) override;
+  controller_interface::return_type
+  update(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
   RIGID_POSE_BROADCASTER_PUBLIC
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn on_configure(
@@ -69,14 +72,15 @@ public:
 protected:
   //  For the PoseStamped message,
   std::shared_ptr<rclcpp::Publisher<ndi_msgs::msg::RigidArray>> rigid_pose_publisher_;
-  std::shared_ptr<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>> realtime_rigid_pose_publisher_;
-  std::unordered_map<std::string, double> name_if_value_mapping_;
+  std::shared_ptr<realtime_tools::RealtimePublisher<ndi_msgs::msg::RigidArray>>
+        realtime_rigid_pose_publisher_;
 
-  std::vector<std::string> sensor_names;
-  std::vector<int64_t> sensor_ids;
+  std::unordered_map<std::string, double> mapStateValue;
 
-  std::string frame_id;
+  std::vector<std::string> sensorNames;
+  std::vector<int64_t> sensorIDs;
 
+  std::string frameID;
 };
 
 }  // namespace rigid_pose_broadcaster

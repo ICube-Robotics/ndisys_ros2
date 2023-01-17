@@ -11,7 +11,7 @@ controller_manager:
 
 
 rigid_pose_broadcaster:
-  ros__parameters:  
+  ros__parameters:
     state_publish_rate: 10
     sensor_names:
       - fus_tracker

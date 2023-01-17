@@ -73,8 +73,8 @@ std::string TransformStatus::toString(uint8_t errorCode)
 			return "OutOfVolume";
 		case TransformStatus::TooFewMarkers:
 			return "TooFewMarkers";
-		case TransformStatus::Inteference:
-			return "Inteference";
+		case TransformStatus::Interference:
+			return "Interference";
 		case TransformStatus::BadTransformFit:
 			return "BadTransformFit";
 		case TransformStatus::DataBufferLimit:

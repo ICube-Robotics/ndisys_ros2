@@ -123,7 +123,7 @@ public:
 	//! A list of marker 3Ds, if this was requested in the BX2 options
 	std::vector<MarkerData> markers;
 
-	//! Button data assoicated with the frame
+	//! Button data associated with the frame
 	std::vector<uint8_t> buttons;
 
 	//! System alerts that were active during the frame
