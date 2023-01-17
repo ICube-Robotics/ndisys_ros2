@@ -105,7 +105,7 @@ namespace TransformStatus
 				  PartiallyOutOfVolume = 0x03,
 				  OutOfVolume = 0x09,
 				  TooFewMarkers = 0x0D,
-				  Inteference = 0x0E,
+				  Interference = 0x0E,
 				  BadTransformFit = 0x11,
 				  DataBufferLimit = 0x12,
 				  AlgorithmLimit = 0x13,

@@ -72,7 +72,7 @@ namespace SystemAlertType
 	 * @brief  Defines the type of SystemAlert.
 	 * @details  A fault indicates the system is unable to function properly, and likely requires repair.
 	 *           An alert is a condition that may impact measurement performance, but can be resolved without repair.
-	 *           An event is a normal occurence that may impact system behaviour or performance.
+	 *           An event is a normal occurrence that may impact system behaviour or performance.
 	 */
 	enum value { Fault = 0x00,
 		         Alert = 0x01,

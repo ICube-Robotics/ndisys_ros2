@@ -139,9 +139,9 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
     {
       auto sensorName = this->sensorNames.at(iter_);
       auto sensorID = this->sensorIDs.at(iter_);
-      
+
       auto tempPose = geometry_msgs::msg::Pose();
-      
+
       if(abs(get_value(name_if_value_mapping_, sensorName+"/pose.position.x")) < 10000 )
       {
         tempPose.position.x = get_value(name_if_value_mapping_, sensorName+"/pose.position.x");
@@ -162,7 +162,7 @@ controller_interface::return_type RigidPoseBroadcaster::update(const rclcpp::Tim
         rigidPoseMsg.inbound.push_back(false);
       }
     }
-    realtime_rigid_pose_publisher_->unlockAndPublish();    
+    realtime_rigid_pose_publisher_->unlockAndPublish();
   }
 
   return controller_interface::return_type::OK;

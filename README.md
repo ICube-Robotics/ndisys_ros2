@@ -9,7 +9,7 @@ The driver is compatible with the following NDI measurement systems:
 ## Installation
 ***Required setup : Ubuntu 22.04 LTS***
 
-1.  Install `ros2` packages. The current developpment is based of `ros2 humble`. Installation steps are decribed [here](https://docs.ros.org/en/humble/Installation.html).
+1.  Install `ros2` packages. The current development is based of `ros2 humble`. Installation steps are described [here](https://docs.ros.org/en/humble/Installation.html).
 2. Source your `ros2` environment:
     ```bash
     source /opt/ros/humble/setup.bash
@@ -38,21 +38,21 @@ The driver is compatible with the following NDI measurement systems:
     source install/setup.bash
     ```
 
--   Add you markers in the `polaris_description/config/polaris.config.xacro` file using the following macro. All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. It is adviced to load only the markers you are interested in broadcasting. 
+-   Add you markers in the `polaris_description/config/polaris.config.xacro` file using the following macro. All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. It is advised to load only the markers you are interested in broadcasting.
 
     ```XML
     <xacro:ndi_sensor name="costum_name" srom="path_to_rom_bin_file"/>
     ```
 
-    All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. It is adviced to load only the markers you are interested in broadcasting. 
+    All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. It is advised to load only the markers you are interested in broadcasting.
 
 
-- You can now choose what trackers to publish in the `polaris_bringup/config/polaris_broadcaster.yaml` file by adding their names in `sensor_names` and IDs in `sensor_ids`. Also, edit the `world_frame` and `state_publish_rate` parameters to match your application. 
+- You can now choose what trackers to publish in the `polaris_bringup/config/polaris_broadcaster.yaml` file by adding their names in `sensor_names` and IDs in `sensor_ids`. Also, edit the `world_frame` and `state_publish_rate` parameters to match your application.
 
     Example:
     ```YAML
     rigid_pose_broadcaster:
-        ros__parameters:  
+        ros__parameters:
             state_publish_rate: 10
             sensor_names:
             - marker1

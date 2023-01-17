@@ -51,7 +51,7 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
     /* Get params  .......................................................... */
     getParamsFromDesc();
 
-    /* Attemp Connect ....................................................... */
+    /* Attempt Connect ....................................................... */
     if (capi_.connect(ndi_ip_) != 0){
         // Print the error and exit if we can't connect to a device
         std::cout << "Connection Failed to host: " << ndi_ip_ << std::endl;
@@ -91,7 +91,7 @@ CallbackReturn NdiSensorHardwareInterface::on_init(
         enabledTools_.back().toolInfo = getToolInfo(portHandles_[i].getPortHandle());
     }
 
-    hw_tracker_poses_.resize(info_.sensors.size(), 
+    hw_tracker_poses_.resize(info_.sensors.size(),
         std::vector<double>(7, std::numeric_limits<double>::quiet_NaN()));
 
 
@@ -108,16 +108,16 @@ NdiSensorHardwareInterface::export_state_interfaces()
             info_.sensors[s].name, info_.sensors[s].state_interfaces[i].name, &hw_tracker_poses_[s][i]));
         }
     }
-    
+
     return state_interfaces;
 }
 // ------------------------------------------------------------------------------------------
 CallbackReturn NdiSensorHardwareInterface::on_activate(const rclcpp_lifecycle::State & previous_state)
 {
-   
+
     int tracking_return_code = capi_.startTracking();
     onErrorPrintDebugMessage("Tracking: ", tracking_return_code);
-    return (tracking_return_code < 0 ? CallbackReturn::FAILURE : CallbackReturn::SUCCESS);  
+    return (tracking_return_code < 0 ? CallbackReturn::FAILURE : CallbackReturn::SUCCESS);
 }
 // ------------------------------------------------------------------------------------------
 CallbackReturn NdiSensorHardwareInterface::on_deactivate(const rclcpp_lifecycle::State & previous_state)
@@ -128,7 +128,7 @@ CallbackReturn NdiSensorHardwareInterface::on_deactivate(const rclcpp_lifecycle:
 hardware_interface::return_type NdiSensorHardwareInterface::read(
     const rclcpp::Time & time, const rclcpp::Duration & period)
 {
-    
+
     newToolData_ = apiSupportsBX2_
                         ? capi_.getTrackingDataBX2("--6d=tools --3d=tools --sensor=none --1d=none")
                         : capi_.getTrackingDataBX(TrackingReplyOption::TransformData |
@@ -147,12 +147,12 @@ hardware_interface::return_type NdiSensorHardwareInterface::read(
 
     // Store one pose of the trackers
     std::vector<double> tracker_pose_(7);
-    
+
     for (size_t t = 0; t < enabledTools_.size(); t++){
-        
+
         enabledTools_[t].dataIsNew = false;
 
-        
+
         tracker_pose_.at(0) = enabledTools_[t].transform.tx / 1000.0;
         tracker_pose_.at(1) = enabledTools_[t].transform.ty / 1000.0;
         tracker_pose_.at(2) = enabledTools_[t].transform.tz / 1000.0;
@@ -164,7 +164,7 @@ hardware_interface::return_type NdiSensorHardwareInterface::read(
 
         hw_tracker_poses_.at(t) = tracker_pose_;
     }
-    
+
     return hardware_interface::return_type::OK;
 }
 // ------------------------------------------------------------------------------------------
@@ -209,7 +209,7 @@ void NdiSensorHardwareInterface::loadTool(const char *toolDefinitionFilePath)
 void NdiSensorHardwareInterface::initializeAndEnableTools()
 {
     // Initialize and enable tools
-    std::vector<PortHandleInfo> portHandles = 
+    std::vector<PortHandleInfo> portHandles =
             capi_.portHandleSearchRequest(PortHandleSearchRequestOption::NotInit);
     for (size_t i = 0; i < portHandles.size(); i++)
     {
@@ -223,7 +223,7 @@ void NdiSensorHardwareInterface::initializeAndEnableTools()
 std::string NdiSensorHardwareInterface::getToolInfo(std::string toolHandle){
     // Get the port handle info from PHINF
     PortHandleInfo info = capi_.portHandleInfo(toolHandle);
-    
+
     // Return the ID and SerialNumber the desired string format
     std::string outputString = info.getToolId();
     outputString.append(" s/n:").append(info.getSerialNumber());

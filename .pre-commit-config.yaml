@@ -64,6 +64,7 @@ repos:
         language: system
         files: \.(c|cc|cxx|cpp|frag|glsl|h|hpp|hxx|ih|ispc|ipp|java|js|m|proto|vert)$
         args: ['-fallback-style=none', '-i']
+        exclude: ndi_hardware/external
 
   - repo: local
     hooks:
@@ -74,6 +75,7 @@ repos:
         entry: ament_cppcheck
         language: system
         files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
+        exclude: ndi_hardware/external
 
   # Maybe use https://github.com/cpplint/cpplint instead
   - repo: local
@@ -86,6 +88,7 @@ repos:
         language: system
         files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
         args: ["--linelength=100", "--filter=-whitespace/newline"]
+        exclude: ndi_hardware/external
 
   # Cmake hooks
   - repo: local
@@ -97,6 +100,7 @@ repos:
         entry: ament_lint_cmake
         language: system
         files: CMakeLists\.txt$
+        exclude: ndi_hardware/external
 
   # Copyright
   - repo: local
@@ -107,7 +111,7 @@ repos:
         stages: [commit]
         entry: ament_copyright
         language: system
-        exclude: ndi_hardware\external
+        exclude: ndi_hardware/external
 
   # Docs - RestructuredText hooks
   - repo: https://github.com/PyCQA/doc8
@@ -133,4 +137,3 @@ repos:
       - id: codespell
         args: ['--write-changes']
         exclude: CHANGELOG\.rst|\.(svg|pyc)$
-        

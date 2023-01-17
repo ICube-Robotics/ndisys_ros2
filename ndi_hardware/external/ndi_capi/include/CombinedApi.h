@@ -91,7 +91,7 @@ namespace CommBaudRateEnum
  * @brief This class encapsulates communication with NDI devices using the Combined API (CAPI).
  * @details This class encapsulates binary and string parsing required to send/receive commands.
  *          This class does not provide an exhaustive implementation of every API call, it does
- *          not implement every option available for some commmands. It is intended as a
+ *          not implement every option available for some commands. It is intended as a
  *          supplement to the API guide, with working sample code that compiles and runs cross
  *          platform (Windows/Mac/Linux). Performance concerns were secondary to readability
  *          and portability. Complexities like threading were intentionally avoided.
@@ -306,7 +306,7 @@ private:
 	/**
 	 * @brief Sends a command to the device.
 	 * @param command A std::string containing the ASCII command to send.
-	 * @returns The number of charaters written, or -1 if an error occurred.
+	 * @returns The number of characters written, or -1 if an error occurred.
 	 */
 	int sendCommand(std::string command) const;
 
@@ -368,7 +368,7 @@ static const char* warningStrings[] =
 	"Possible hardware fault",
 	"The tool violates unique geometry constraints",
 	"The tool is incompatible with other loaded tools",
-	"The tool is incompatible with other loaded tools and violate design contraints",
+	"The tool is incompatible with other loaded tools and violate design constraints",
 	"The tool does not specify a marker wavelength. The system will use the default wavelength."
 };
 

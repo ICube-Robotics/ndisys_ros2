@@ -64,7 +64,7 @@ public:
       const rclcpp::Duration & period) override;
 
 private:
-  // Store the poses of the trackers 
+  // Store the poses of the trackers
   std::vector<std::vector<double>> hw_tracker_poses_;
 
 
@@ -82,7 +82,7 @@ private:
   std::string ndi_ip_;
   /** @brief True if the connected device supports BX2 request structure*/
   bool apiSupportsBX2_ = false;
-  /** @brief Class of functions mainly without real use but organization. 
+  /** @brief Class of functions mainly without real use but organization.
    * To be stripped and removed*/
   CombinedApi capi_;
 
