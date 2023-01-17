@@ -111,7 +111,7 @@ repos:
         stages: [commit]
         entry: ament_copyright
         language: system
-        exclude: ndi_hardware/external
+        exclude: ndi_hardware/external|\.(svg|pyc|md)$
 
   # Docs - RestructuredText hooks
   - repo: https://github.com/PyCQA/doc8
