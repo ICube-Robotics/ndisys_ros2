@@ -16,8 +16,8 @@
 // Authors: Maciej Bednarczyk, Adnan SAOOD
 //
 
-#ifndef NDI_HARDWARE__NDI_EFFORT_HI
-#define NDI_HARDWARE__NDI_EFFORT_HI
+#ifndef NDI_HARDWARE__NDI_SENSOR_HI_HPP_
+#define NDI_HARDWARE__NDI_SENSOR_HI_HPP_
 
 #include <memory>
 #include <string>
@@ -64,24 +64,30 @@ public:
       const rclcpp::Duration & period) override;
 
 private:
-  // Store the poses of the trackers
+  /** @brief Store the poses of the trackers*/
   std::vector<std::vector<double>> hw_tracker_poses_;
-
 
   /** @brief Vector holding tool names (file paths) in order of YAML file*/
   std::vector<std::string> tool_names_;
+
   /** @brief Vector holding currently tracked tools*/
   std::vector<ToolData> enabledTools_;
+
   /** @brief Vector holding currently tracked tools*/
   std::vector<ToolData> newToolData_;
+
   /** @brief Vector holding port handles for the trackers (see NDI Api documentation)*/
   std::vector<PortHandleInfo> portHandles_;
+
   /** @brief Number of tools in the YAML file (tracked and not-tracked)*/
   size_t tool_count_;
+
   /** @brief IP of the NDI device (string format in the YAML)*/
   std::string ndi_ip_;
+
   /** @brief True if the connected device supports BX2 request structure*/
   bool apiSupportsBX2_ = false;
+
   /** @brief Class of functions mainly without real use but organization.
    * To be stripped and removed*/
   CombinedApi capi_;
@@ -117,13 +123,13 @@ private:
    * @brief Returns the string: "[tool.id] s/n:[tool.serialNumber]" used in CSV output
    */
   std::string getToolInfo(std::string toolHandle);
+
   /**
    * @brief Returns a rclcpp::Parameter object with params inside.
    */
   void getParamsFromDesc();
-
 };
 
-}  // namespace NDI_HARDWARE
+}  // namespace ndi_hardware
 
-#endif  // NDI_HARDWARE__NDI_EFFORT_HI
+#endif  // NDI_HARDWARE__NDI_SENSOR_HI_HPP_
