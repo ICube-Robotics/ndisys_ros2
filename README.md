@@ -35,11 +35,6 @@ The driver is compatible with the following NDI measurement systems:
     source install/setup.bash
     ```
 ## Running the driver
-- After sourcing ros2 and this package in a shell run:
-    ```bash
-    source install/setup.bash
-    ros2 launch polaris_bringup vega.launch.py
-    ```
 
 -   Add you markers in the `polaris_description/ros2_control/polaris.ros2_control.xacro` file using the following macro. All the mentioned `.rom` files here will be loaded to the NDI device and will be tracked. _It is advised_ to load only the markers you are interested in broadcasting.
 
@@ -68,6 +63,15 @@ The driver is compatible with the following NDI measurement systems:
             - 2023
             world_frame: polaris_frame
     ```
+
+- After sourcing ros2 and this package in a shell run:
+    ```bash
+    source install/setup.bash
+    ros2 launch polaris_bringup vega.launch.py
+    ```
+
+- Start and activate the controller `rigid_pose_broadcaster` in a new terminal after sourcing `ndisys_ros2` and ROS2. See this [link](https://control.ros.org/master/doc/ros2_control/ros2controlcli/doc/userdoc.html#load-controller) for a guide to do
+
 
 ## Contacts ##
 ![icube](https://icube.unistra.fr/fileadmin/templates/DUN/icube/images/logo.png)
