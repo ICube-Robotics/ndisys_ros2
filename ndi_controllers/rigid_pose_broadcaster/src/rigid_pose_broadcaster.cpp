@@ -159,12 +159,14 @@ RigidPoseBroadcaster::update(const rclcpp::Time & time, const rclcpp::Duration &
         rigidPoseMsg.poses.push_back(tempPose);
         rigidPoseMsg.ids.push_back(sensorID);
         rigidPoseMsg.inbound.push_back(true);
+        rigidPoseMsg.frames.push_back(sensorName);
       }
       else
       {
         rigidPoseMsg.poses.push_back(tempPose);
         rigidPoseMsg.ids.push_back(sensorID);
         rigidPoseMsg.inbound.push_back(false);
+        rigidPoseMsg.frames.push_back(sensorName);
       }
     }
     realtime_rigid_pose_publisher_->unlockAndPublish();
