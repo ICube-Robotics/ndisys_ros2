@@ -4,8 +4,11 @@
 # Time of sensor data acquisition, coordinate frame ID.
 std_msgs/Header header
 
-#Array of point IDs.
+#Array of tracker IDs.
 int32[] ids
+
+#Array of tracker names.
+string[] frames
 
 #If tracker is inbound measurement pyramid
 bool[] inbound
